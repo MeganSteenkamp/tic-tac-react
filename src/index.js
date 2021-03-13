@@ -49,6 +49,7 @@ function Square(props) {
       this.state = {
         history: [{
           squares: Array(9).fill(null),
+          coordinates: String(undefined),
         }],
         stepNumber: 0,
         xIsNext: true
@@ -56,6 +57,7 @@ function Square(props) {
     }
     
     handleClick(i) {
+      const moveCoordinates = `(${i % 3}, ${Math.floor(i / 3)})`;
       const history = this.state.history.slice(0, this.state.stepNumber + 1);
       const current = history[history.length - 1];     
       const squares = current.squares.slice();
@@ -65,7 +67,8 @@ function Square(props) {
       squares[i] = this.state.xIsNext ? 'X' : 'O';
       this.setState({
         history: history.concat([{
-          squares: squares
+          squares: squares,
+          coordinates: moveCoordinates,
         }]),
         stepNumber: history.length,
         xIsNext: !this.state.xIsNext,
@@ -86,12 +89,15 @@ function Square(props) {
       
       const moves = history.map((step, move) => {
         const desc = move ?
-             'Go to move #' + move :
+             `Go to move #${move}` :
              'Go to game start';
+        const moveCoordinates = move ?
+              `${history[move].coordinates}` :
+              undefined;
         return (
           <li key={move}>
             <button onClick={() => this.jumpTo(move)}>
-              {desc}
+              {desc}: {moveCoordinates}
             </button>
           </li>
         );
