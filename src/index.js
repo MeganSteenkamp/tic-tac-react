@@ -14,6 +14,7 @@ function Square(props) {
     renderSquare(i) {
       return (
         <Square
+          key={i}
           value={this.props.squares[i]}
           onClick={() => this.props.onClick(i)}
         />
@@ -21,25 +22,19 @@ function Square(props) {
     }
   
     render() {
+      const boardWidth = 3;
+      let squares = [];
+      for (let i = 0; i<boardWidth; i++) {
+        let row = []
+        for (let j = 0; j < boardWidth; j++) {
+          row.push(this.renderSquare(i * boardWidth + j));
+        }
+        squares.push(<div key={i} className="board-row">{row}</div>);
+      }
+
       return (
-        <div>
-          <div className="board-row">
-            {this.renderSquare(0)}
-            {this.renderSquare(1)}
-            {this.renderSquare(2)}
-          </div>
-          <div className="board-row">
-            {this.renderSquare(3)}
-            {this.renderSquare(4)}
-            {this.renderSquare(5)}
-          </div>
-          <div className="board-row">
-            {this.renderSquare(6)}
-            {this.renderSquare(7)}
-            {this.renderSquare(8)}
-          </div>
-        </div>
-      );
+        <div>{squares}</div>
+      )
     }
   }
   
@@ -57,8 +52,8 @@ function Square(props) {
     }
     
     handleClick(i) {
-      const moveCoordinates = `(${i % 3}, ${Math.floor(i / 3)})`;
       const history = this.state.history.slice(0, this.state.stepNumber + 1);
+      const moveCoordinates = `(${i % 3}, ${Math.floor(i / 3)})`;
       const current = history[history.length - 1];     
       const squares = current.squares.slice();
       if (calculateWinner(squares) || squares[i]) {
@@ -89,15 +84,15 @@ function Square(props) {
       
       const moves = history.map((step, move) => {
         const desc = move ?
-             `Go to move #${move}` :
+             `Go to move #${move} : ${history[move].coordinates}` :
              'Go to game start';
-        const moveCoordinates = move ?
-              `${history[move].coordinates}` :
-              undefined;
         return (
           <li key={move}>
-            <button onClick={() => this.jumpTo(move)}>
-              {desc}: {moveCoordinates}
+            <button 
+              className={move === this.state.stepNumber ? 'move-list-item-selected' : ''}
+              onClick={() => this.jumpTo(move)}
+            >
+              {desc}
             </button>
           </li>
         );
