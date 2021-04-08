@@ -4,7 +4,7 @@ body {
 }
 
 ol, ul {
-  padding-left: 30px;
+  padding-left: 20px;
 }
 
 .board-row:after {
@@ -32,6 +32,10 @@ ol, ul {
   width: 64px;
 }
 
+.square--winning {
+  background-color: pink;
+}
+
 .square:focus {
   outline: none;
 }
@@ -49,7 +53,8 @@ ol, ul {
   margin-left: 20px;
 }
 
-.move-list-item-selected{
+.move-list-item-selected {
   float: left;
   font-weight: bold;
+  background-color: pink;
 }
