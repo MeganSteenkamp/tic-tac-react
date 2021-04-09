@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Button, Switch } from "@material-ui/core";
+import { Switch } from "@material-ui/core";
 import "./index.css";
 
 function Square(props) {
@@ -122,7 +122,10 @@ class Game extends React.Component {
     let status;
     if (winner) {
       status = "Winner: " + winner.player;
-    } else {
+    } else if (!current.squares.includes(null)) {
+      status = "This game is a draw!"; 
+    } 
+    else {
       status = "Next player: " + (this.state.xIsNext ? "X" : "O");
     }
 
@@ -136,7 +139,7 @@ class Game extends React.Component {
           />
         </div>
         <div className="game-info">
-          <div>{status}</div>
+          <div><b>{status}</b></div>
           <div>
             Reversed list
             <Switch onChange={() => this.sortHistory()} />
